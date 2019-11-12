@@ -1,0 +1,40 @@
+.header{
+  display: flex;
+  align-items: center;
+  margin: 20px;
+
+  hr{
+    margin-top: 3px;
+    width: 100%;
+  }
+}
+
+.header__title{
+  border-left: 6px solid #e4e6e9;
+  font-size: 26px;
+  color: #83858a;
+  padding: 10px 20px;
+  white-space: nowrap;
+}
+  
+@media screen and (max-width: 768px){
+  
+  .header__title{
+    border-left: 4px solid #e4e6e9;
+    font-size: 22px;
+    padding: 8px 15px;
+  }
+}
+  
+@media screen and (max-width: 425px){
+  
+  .header{
+    margin: 10px;
+  }
+      
+  .header__title{
+    padding: 5px 10px;
+    font-size: 20px;
+  }
+}
+  
