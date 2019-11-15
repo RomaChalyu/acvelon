@@ -1,30 +1,29 @@
 /* eslint-disable no-underscore-dangle */
 import { createStore, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
-import { filter } from 'minimatch'
 
 const ADD_INVOICE = 'ADD_INVOICE'
 const EDIT_INVOICE = 'EDIT_INVOICE'
 const LOAD_INVOICES = 'LOAD_INVOICES'
 const LOAD_INVOICES_SUCCESS = 'LOAD_INVOICES_SUCCESS'
-const CHANGE_ACTION = 'CHANGE_ACTION'
-const DELETE_INVOICE = 'DELETE_INVOICE'
+const REMOVE_INVOICE = 'REMOVE_INVOICE'
 const initialState = {
   invoices: [],
   loading: false,
-  action: null,
 }
 
 const reduser = (state = initialState, action) => {
   switch (action.type) {
     case ADD_INVOICE: {
-      return { ...state, invoices: [...state.invoices, action.invoice], action: null }
+      return { ...state, invoices: [...state.invoices, action.invoice] }
     }
 
     case EDIT_INVOICE: {
       const id = action.invoice._id
-      const newInvoices = state.invoices.map(invoice => (invoice._id === id ? action.invoice : invoice))
-      return { ...state, invoices: [...newInvoices], action: null }
+      const newInvoices = state.invoices.map(invoice =>
+        invoice._id === id ? action.invoice : invoice
+      )
+      return { ...state, invoices: [...newInvoices] }
     }
 
     case LOAD_INVOICES: {
@@ -35,11 +34,7 @@ const reduser = (state = initialState, action) => {
       return { ...state, invoices: action.invoices, loading: false }
     }
 
-    case CHANGE_ACTION: {
-      return { ...state, action: action.action }
-    }
-
-    case DELETE_INVOICE: {
+    case REMOVE_INVOICE: {
       const { id } = action
       const newInvoices = state.invoices.filter(invoices => invoices._id !== id)
       return { ...state, invoices: newInvoices }
@@ -58,8 +53,7 @@ export const getInvoices = async dispatch => {
   const invoices = await response.json()
   return dispatch({ type: LOAD_INVOICES_SUCCESS, invoices })
 }
-export const deleteInvoice = id => ({ type: DELETE_INVOICE, id })
-export const changeAction = action => ({ type: CHANGE_ACTION, action })
+export const removeInvoice = id => ({ type: REMOVE_INVOICE, id })
 
 const store = createStore(reduser, applyMiddleware(thunk))
 export default store

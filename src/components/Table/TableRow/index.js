@@ -1,11 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { connect } from 'react-redux'
-import { deleteInvoice } from '../../../store'
 
 const TableRow = props => {
   const { number, dateCreated, dateSupplied, comment, _id, action, removeInvoice } = props
-
   return (
     <div className="table__row">
       <p className="table__text">{dateCreated}</p>
@@ -19,7 +16,7 @@ const TableRow = props => {
       ) : (
         <p />
       )}
-      {action === 'delete' ? (
+      {action === 'remove' ? (
         <button type="button" onClick={() => removeInvoice(_id)} className="link">
           delete
         </button>
@@ -29,12 +26,4 @@ const TableRow = props => {
     </div>
   )
 }
-export default connect(
-  state => ({
-    invoices: state.invoices,
-    action: state.action,
-  }),
-  dispatch => ({
-    removeInvoice: invoice => dispatch(deleteInvoice(invoice)),
-  })
-)(TableRow)
+export default TableRow

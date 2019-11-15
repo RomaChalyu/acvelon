@@ -1,0 +1,18 @@
+.spinner-block{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.text-spinner{
+  margin-right: 10px;
+}
+
+.spinner{
+  width: 70px;
+  height: 70px;
+  background: url('../../image/spiner.gif') no-repeat;
+  background-size: contain;
+}
+  

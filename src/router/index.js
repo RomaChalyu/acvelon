@@ -1,21 +1,22 @@
 import React from 'react'
-import { Route, Switch, Router } from 'react-router-dom'
+import { Route, Switch, Router as BrowserRouter } from 'react-router-dom'
 import { createBrowserHistory } from 'history'
-import MainView from '../pages/MainView'
-import CreateInvoiceView from '../pages/CreateInvoiceView'
-import Edit from '../pages/Edit'
+import Home from '../pages/Home'
+import CreateInvoice from '../pages/CreateInvoice'
+import EditInvoice from '../pages/EditInvoice'
+import ErrorPage from '../pages/404'
 
 export const customHistory = createBrowserHistory()
-
-export default () => {
+const Router = () => {
   return (
-    <Router history={customHistory}>
+    <BrowserRouter history={customHistory}>
       <Switch>
-        <Route exact path="/" component={MainView} />
-        <Route exact path="/CreateInvoiceView" component={CreateInvoiceView} />
-        <Route exact path="/edit/:id" component={Edit} />
-        <Route path="*" component={() => <div>Error 404</div>} exact />
+        <Route exact path="/" component={Home} />
+        <Route exact path="/create-invoice" component={CreateInvoice} />
+        <Route exact path="/edit/:id" component={EditInvoice} />
+        <Route path="*" component={ErrorPage} />
       </Switch>
-    </Router>
+    </BrowserRouter>
   )
 }
+export default Router

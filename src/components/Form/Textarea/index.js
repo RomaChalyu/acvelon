@@ -1,8 +1,8 @@
 import React from 'react'
 
 const Textarea = props => {
-  const { value, onChangeInput } = props
-  const ChangeInput = e => onChangeInput(e.target.id, e.target.value)
+  const { commentValue, setCommentValue } = props
+  const ChangeInput = e => setCommentValue(e.target.value)
   return (
     <div className="form__comment">
       <label htmlFor="comment" className="text">
@@ -12,7 +12,7 @@ const Textarea = props => {
           maxLength="160"
           className="input"
           onChange={ChangeInput}
-          value={value}
+          value={commentValue}
           required
         />
       </label>

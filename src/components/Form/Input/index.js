@@ -1,8 +1,8 @@
 import React from 'react'
 
 const Input = props => {
-  const { value, onChangeInput } = props
-  const ChangeInput = e => onChangeInput(e.target.id, e.target.value)
+  const { setNumberValue, numberValue } = props
+  const ChangeInput = e => setNumberValue(e.target.value)
 
   return (
     <div className="form__block">
@@ -14,7 +14,7 @@ const Input = props => {
           minLength="3"
           className="input class"
           onChange={ChangeInput}
-          value={value}
+          value={numberValue}
           required
         />
       </label>

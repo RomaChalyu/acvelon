@@ -2,105 +2,79 @@
 /* eslint-disable camelcase */
 import React, { useState, useEffect } from 'react'
 import { withRouter } from 'react-router-dom'
-import { connect } from 'react-redux'
 import moment from 'moment'
 import DatePicker from './DatePicker'
 import Input from './Input'
-import { addInvoice, editInvoice } from '../../store'
 import Textarea from './Textarea'
 import './styles.scss'
 
 const Form = props => {
   const { id } = props.match.params
-  const StartDate = moment(new Date()).format('DD-MM-YYYY')
-  const [value, setValue] = useState({
-    number: '',
-    comment: '',
-    date_supplied: StartDate,
-    date_created: StartDate,
-  })
+  const { addInvoice, editInvoice, history, state } = props
+  const [numberValue, setNumberValue] = useState('')
+  const [commentValue, setCommentValue] = useState('')
+  const [dateSupplied, setDateSupplied] = useState(new Date())
+  const [dateCreated, setDateCreated] = useState(new Date())
 
   const generateId = () => `f${(Math.random() * 1e18).toString(16)}`
-  const onChangeInput = (inputId, data) => {
-    switch (inputId) {
-      case 'number':
-        return setValue({ ...value, number: data })
-
-      case 'comment':
-        return setValue({ ...value, comment: data })
-
-      case 'date_created':
-        return setValue({ ...value, date_created: data })
-
-      case 'date_supplied':
-        return setValue({ ...value, date_supplied: data })
-
-      default:
-        return null
-    }
-  }
 
   useEffect(() => {
     if (id) {
-      if (!props.state.length) return props.history.push('/')
-
-      const findDesiredInvoice = props.state.find(invoice => invoice._id === id)
-      const { number, comment, date_supplied, date_created } = findDesiredInvoice
-      setValue({ number, comment, date_supplied, date_created })
+      if (!state.length) return props.history.push('/')
+      const formatDateInput = date => {
+        const [day, month, year] = date.split('-')
+        return new Date(year, month - 1, day)
+      }
+      const invoice = props.state.find(_invoice => _invoice._id === id)
+      const { number, comment, date_supplied, date_created } = invoice
+      setNumberValue(number)
+      setCommentValue(comment)
+      setDateCreated(formatDateInput(date_created))
+      setDateSupplied(formatDateInput(date_supplied))
     }
   }, [id])
 
   const onSubmit = e => {
     e.preventDefault()
-    const { EditInvoice, AddInvoice, history } = props
     const invoice = {
       _id: id || generateId(),
-      number: value.number,
-      date_created: value.date_created,
-      date_supplied: value.date_supplied,
-      comment: value.comment,
+      number: numberValue,
+      date_created: moment(dateCreated).format('DD-MM-YYYY'),
+      date_supplied: moment(dateSupplied).format('DD-MM-YYYY'),
+      comment: commentValue,
     }
     history.push('/')
-    return id ? EditInvoice(invoice) : AddInvoice(invoice)
+    return id ? editInvoice(invoice) : addInvoice(invoice)
   }
 
   return (
     <div className="wrap-block">
       <form onSubmit={onSubmit} className="form">
         <div className="form__header">
-          <Input value={value.number} onChangeInput={onChangeInput} />
+          <Input numberValue={numberValue} setNumberValue={setNumberValue} />
           <DatePicker
             title="Invoice Date"
             id="date_created"
-            onChangeInput={onChangeInput}
-            date={value.date_created}
+            onChangeInput={setDateSupplied}
+            date={dateSupplied}
           />
         </div>
         <div>
           <DatePicker
             title="Supply Date"
             id="date_supplied"
-            onChangeInput={onChangeInput}
-            date={value.date_supplied}
+            onChangeInput={setDateCreated}
+            date={dateCreated}
           />
         </div>
-        <Textarea value={value.comment} onChangeInput={onChangeInput} />
+        <Textarea commentValue={commentValue} setCommentValue={setCommentValue} />
         <div className="from__btn">
           <button type="submit" value="Отправить" className="btn">
             Save
           </button>
         </div>
-
       </form>
     </div>
   )
 }
-export default connect(
-  state => ({
-    state: state.invoices,
-  }),
-  dispatch => ({
-    AddInvoice: invoice => dispatch(addInvoice(invoice)),
-    EditInvoice: invoice => dispatch(editInvoice(invoice)),
-  })
-)(withRouter(Form))
+export default withRouter(Form)

@@ -1,9 +1,8 @@
 /* eslint-disable camelcase */
 import React from 'react'
-import { connect } from 'react-redux'
 import Invoice from './TableRow'
 import TableHeader from './TableHeader'
-import { getInvoices as getInvoicesAction } from '../../store'
+import Spinner from '../Spinner'
 import './styles.scss'
 
 class Table extends React.Component {
@@ -13,18 +12,11 @@ class Table extends React.Component {
     return invoices.length ? null : getInvoices()
   }
 
-  showSpinner = () => (
-    <div className="wrap-block">
-      <p className="text">Invoice</p>
-      loading...
-    </div>
-  )
-
   render() {
-    const { invoices, loading } = this.props
+    const { invoices, loading, action, removeInvoice } = this.props
 
     return loading ? (
-      this.showSpinner()
+      <Spinner />
     ) : (
       <div className="wrap-block">
         <p className="text">Invoice</p>
@@ -43,6 +35,8 @@ class Table extends React.Component {
                   dateCreated={date_created}
                   dateSupplied={date_supplied}
                   comment={comment}
+                  action={action}
+                  removeInvoice={removeInvoice}
                 />
               )
             })}
@@ -53,12 +47,4 @@ class Table extends React.Component {
   }
 }
 
-export default connect(
-  state => ({
-    invoices: state.invoices,
-    loading: state.loading,
-  }),
-  dispatch => ({
-    getInvoices: () => dispatch(getInvoicesAction),
-  })
-)(Table)
+export default Table
