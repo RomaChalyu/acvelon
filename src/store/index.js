@@ -4,9 +4,11 @@ import thunk from 'redux-thunk'
 
 const ADD_INVOICE = 'ADD_INVOICE'
 const EDIT_INVOICE = 'EDIT_INVOICE'
+const REMOVE_INVOICE = 'REMOVE_INVOICE'
+
 const LOAD_INVOICES = 'LOAD_INVOICES'
 const LOAD_INVOICES_SUCCESS = 'LOAD_INVOICES_SUCCESS'
-const REMOVE_INVOICE = 'REMOVE_INVOICE'
+
 const initialState = {
   invoices: [],
   loading: false,

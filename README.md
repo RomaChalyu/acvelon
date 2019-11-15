@@ -1,23 +1,15 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Install 
-
-#### JSON Server
-
+# Getting started
+## 1. Install json server
 ### ```npm install -g json-server ```
-
-## Getting started 
-
-Run the command
+## 2. Install node modules 
+### ```npm install ```
+## 3. Run  json-server
 ### ```json server - db.json clock```
-
 Now, if you go to  [http://localhost:3000/invoices](http://localhost:3000/invoices),  you'll get array invoices.
-
-After that execute the command 
+## 4. Run application
 ### ```npm start```
-
 Launches the application in development mode
 Open [http://localhost:3001](http://localhost:3001) to view it in a browser
-
-The page will reload if you make changes.
-You will also see all errors in the console.
+## 5. Enjoy ;)
